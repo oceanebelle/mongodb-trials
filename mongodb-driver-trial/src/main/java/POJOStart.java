@@ -8,9 +8,11 @@ import com.mongodb.client.model.Indexes;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
-import java.util.function.Consumer;
+import java.time.Instant;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.combine;
+import static com.mongodb.client.model.Updates.set;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
@@ -39,20 +41,28 @@ public class POJOStart {
         IndexOptions indexOptions = new IndexOptions().unique(true);
         collection.createIndex(Indexes.compoundIndex(
                 Indexes.ascending("name"),
-                Indexes.ascending("squareenix"),
-                Indexes.ascending("rpg")),
+                Indexes.ascending("publisher"),
+                Indexes.ascending("type")),
                 indexOptions);
 
+        // create
         Game game = Game.builder()
                 .name("codevein")
                 .publisher("squareenix")
-                .type("rpg")
+                .type(Instant.now().toString())
                 .build();
 
         collection.insertOne(game);
 
-        collection.find(eq("name", "codevein"))
-                .forEach((Consumer<? super Game>) System.out::println);
+        // find
+        Game g = collection.find(eq("name", "codevein")).first();
+        System.out.println(g);
+
+        // modify
+        g.setPublisher("general");
+        collection.updateOne(eq("_id", g.getId()), combine(set("publisher", "publisher")));
+
+
 
         mongoClient.close();
     }
