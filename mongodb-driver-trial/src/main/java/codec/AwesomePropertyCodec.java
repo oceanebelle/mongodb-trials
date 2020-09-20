@@ -22,7 +22,7 @@ public class AwesomePropertyCodec<T> implements Codec<T> {
 
     @Override
     public T decode(BsonReader reader, DecoderContext decoderContext) {
-        log.info("DECODING AWESOME");
+        log.info("DECODING AWESOME " + property);
 
         if (reader.getCurrentBsonType() == BsonType.BINARY) {
             BsonBinary payload = reader.readBinaryData();
@@ -34,7 +34,7 @@ public class AwesomePropertyCodec<T> implements Codec<T> {
 
     @Override
     public void encode(BsonWriter writer, T value, EncoderContext encoderContext) {
-        log.info("ENCODING AWESOME");
+        log.info("ENCODING AWESOME " + property);
 
         BsonBinary data = new BsonBinary(value.toString().getBytes());
 

@@ -1,5 +1,7 @@
 package codec;
 
+import codec.annotation.Awesome;
+import codec.annotation.AwesomeField;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.codecs.pojo.ClassModelBuilder;
 import org.bson.codecs.pojo.Convention;
@@ -8,6 +10,9 @@ import org.bson.codecs.pojo.PropertyModelBuilder;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
+/**
+ * Use convention to hook into PojoCodecProvider processing
+ */
 @Slf4j
 public class AwesomeConvention implements Convention {
 

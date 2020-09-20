@@ -15,6 +15,8 @@ public class Start {
         String authDb = "test";
         int port = 27017;
 
+        // This is raw jsons
+
         MongoClient mongoClient = MongoClients.create(String.format("mongodb://%s:%s@localhost:%d/%s?authSource=admin",
                 user, password, port, authDb));
 

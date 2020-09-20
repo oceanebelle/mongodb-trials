@@ -1,13 +1,11 @@
-import codec.Awesome;
-import codec.AwesomeField;
-import codec.Encrypted;
+import codec.annotation.Awesome;
+import codec.annotation.AwesomeField;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 
 @Getter
@@ -21,8 +19,8 @@ public class Game {
     private ObjectId id;
     private String name;
 
-    @AwesomeField
     private String type;
 
+    @AwesomeField
     private String publisher;
 }
