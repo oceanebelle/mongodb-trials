@@ -1,0 +1,36 @@
+---
+version: '3'
+services:
+  mongo:
+    image: ${MONGODB_IMAGE:-mongo:4.2.6}
+    ports:
+      - 127.0.0.1:27017:27017
+    # Given a signed SSL certificate located at /etc/ssl/server.pem
+    # and the certificate authority file at /etc/ssl/ca.crt,
+    # you can configure mongod for SSL encryption as follows:
+    # ```
+    # mongod \
+    #   --sslMode requireSSL \
+    #   --sslPEMKeyFile /etc/ssl/server.pem \
+    #   --sslCAFile /etc/ssl/ca.crt
+    # ```
+    # https://docs.mongodb.com/manual/tutorial/configure-ssl/#set-up-mongod-and-mongos-with-certificate-validation
+    command:
+      - --tlsMode=requireTLS
+      - --tlsCertificateKeyFile=/etc/ssl/server.pem
+      - --bind_ip=0.0.0.0
+    volumes:
+      - ./secrets/certificate.crt:/etc/ssl/certificate.crt
+      - ./secrets/server.pem:/etc/ssl/server.pem
+  mongo-replset:
+    image: ${MONGODB_IMAGE:-mongo:4.2.6}
+    ports:
+      - 127.0.0.1:27019:27017
+    command:
+      - --bind_ip=0.0.0.0
+      - --replSet=rs0
+      - --tlsMode=requireTLS
+      - --tlsCertificateKeyFile=/etc/ssl/server.pem
+    volumes:
+      - ./secrets/certificate.crt:/etc/ssl/certificate.crt
+      - ./secrets/server.pem:/etc/ssl/server.pem
